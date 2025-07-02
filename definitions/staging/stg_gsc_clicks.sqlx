@@ -1,0 +1,9 @@
+config { type: "view" } -- A view is efficient for simple transformations
+
+select
+    url as page_url,
+    query,
+    clicks,
+    impressions
+from
+    ${ref("searchdata_url_impression")}

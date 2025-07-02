@@ -1,0 +1,12 @@
+config { type: "table" }
+
+-- Selects and unnests page view events from the raw GA4 data
+select
+    parse_date('%Y%m%d', event_date) as event_date,
+    (select value.string_value from unnest(event_params) where key = 'page_location') as page_url,
+    (select value.int_value from unnest(event_params) where key = 'ga_session_id') as session_id,
+    user_pseudo_id
+from
+    ${ref("events_*")} -- This refers to your declared GA4 source
+where
+    event_name = 'page_view'
